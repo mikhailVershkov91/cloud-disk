@@ -1,6 +1,8 @@
-import { Schema, model, ObjectId } from "mongoose";
+import pkg from "mongoose";
 
-const User = new Schema({
+const { Schema, model, ObjectId } = pkg;
+
+const UserScheme = new Schema({
 	email: { type: "String", required: true },
 	password: { type: "String", required: true },
 	diskSpace: { type: "Number", default: 1024 ** 3 * 10 },
@@ -9,4 +11,6 @@ const User = new Schema({
 	files: [{ type: ObjectId, ref: "File" }],
 });
 
-module.exports = model("User", User);
+const User = model("User", UserScheme);
+
+export default User;
