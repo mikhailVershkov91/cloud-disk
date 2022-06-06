@@ -1,21 +1,25 @@
 import express from "express";
+import dotenv from "dotenv";
 import mongoose from "mongoose";
-import config from "config";
+import router from "./src/routes/router.js";
+
+dotenv.config();
 
 const app = express();
-const PORT = config.get("serverPort");
 
-const start = async () => {
+const PORT = process.env.PORT;
+const url = process.env.MONGO_URL;
+const baseUrl = "/api";
+
+(async () => {
 	try {
-		await mongoose.connect(config.get("dbURL"));
+		await mongoose.connect(url);
+
+		app.use(express.json());
+		app.use(baseUrl, router);
 
 		app.listen(PORT, () => {
-			console.log(`Server is running on http://localhost:${PORT}`);
+			console.info(`Server is running on http://localhost:${PORT}`);
 		});
 	} catch (e) {}
-};
-
-start();
-
-// const url =
-// 	"mongodb+srv://mikhail_vershkov1991:0075482@cluster0.midbj5k.mongodb.net/?retryWrites=true&w=majority";
+})();
