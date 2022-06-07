@@ -18,7 +18,7 @@ async function auth(req, res) {
 				.json({ message: `User with email ${email} already exist` });
 		}
 
-		const hashPassword = await bcrypt.hash(password, 15);
+		const hashPassword = await bcrypt.hash(password, 8);
 
 		const user = new User({ email, password: hashPassword });
 		await user.save();

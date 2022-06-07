@@ -1,6 +1,7 @@
 import express from "express";
 import { check } from "express-validator";
 import auth from "./auth.js";
+import login from "./login.js";
 
 const router = express.Router();
 
@@ -15,5 +16,7 @@ router.post(
 	],
 	auth
 );
+
+router.post("/login", login);
 
 export default router;
