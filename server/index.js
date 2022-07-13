@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import router from "./src/routes/router.js";
+import cors from "./src/middleware/cors.js";
 
 dotenv.config();
 
@@ -15,6 +16,7 @@ const baseUrl = "/api";
 	try {
 		await mongoose.connect(url);
 
+		app.use(cors);
 		app.use(express.json());
 		app.use(baseUrl, router);
 
