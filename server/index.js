@@ -2,7 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import router from "./src/routes/router.js";
-import cors from "./src/middleware/cors.js";
+import cors from "./src/middleware/cors-middleware.js";
 
 dotenv.config();
 

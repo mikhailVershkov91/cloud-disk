@@ -1,7 +1,9 @@
 import express from "express";
 import { check } from "express-validator";
-import auth from "./auth.js";
+import registration from "./registration.js";
 import login from "./login.js";
+import authMiddleware from "../middleware/auth-middleware.js";
+import auth from "./auth.js";
 
 const router = express.Router();
 
@@ -14,9 +16,11 @@ router.post(
 			"Password must be longer than 3 and shorter than 12"
 		).isLength({ min: 3, max: 12 }),
 	],
-	auth
+	registration
 );
 
 router.post("/login", login);
+
+router.get("/auth", authMiddleware, auth);
 
 export default router;

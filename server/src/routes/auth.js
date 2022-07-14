@@ -1,29 +1,21 @@
-import bcrypt from "bcrypt";
-import { validationResult } from "express-validator";
 import User from "../models/User.js";
 
 async function auth(req, res) {
 	try {
-		const errors = validationResult(req);
-		if (!errors.isEmpty()) {
-			return res.status(400).json({ message: "Uncorrect request", errors });
-		}
-		const { email, password } = req.body;
+		const user = User.findOne({ _id: req.user.id });
 
-		const candidate = await User.findOne({ email });
+		const token = jwt.sign({ id: user.id }, key, { expiresIn: "1h" });
 
-		if (candidate) {
-			return res
-				.status(400)
-				.json({ message: `User with email ${email} already exist` });
-		}
-
-		const hashPassword = await bcrypt.hash(password, 8);
-
-		const user = new User({ email, password: hashPassword });
-		await user.save();
-
-		return res.json({ message: "User was created" });
+		return res.json({
+			token,
+			user: {
+				id: user.id,
+				email: user.email,
+				diskSpace: user.diskSpace,
+				usedSpace: user.usedSpace,
+				avatar: user.avatar,
+			},
+		});
 	} catch (e) {
 		console.log(e);
 		res.send({ message: "Server error" });
