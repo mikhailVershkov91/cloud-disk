@@ -10,7 +10,9 @@ const Navbar = () => {
 
 	return (
 		<div className={s.container}>
-			<div className={s.logo}>logo</div>
+			<div>
+				<img src={"/icons/cloud-laptop.svg"} width="40px" height="40px" />
+			</div>
 			<div className={s.nav}>
 				{!isAuth && (
 					<NavLink to="/login" className={s.nav_item}>
