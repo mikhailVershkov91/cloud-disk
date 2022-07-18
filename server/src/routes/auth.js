@@ -1,10 +1,12 @@
 import User from "../models/User.js";
+import { secretKey } from "../../index.js";
+import jwt from "jsonwebtoken";
 
 async function auth(req, res) {
 	try {
-		const user = User.findOne({ _id: req.user.id });
+		const user = await User.findOne({ _id: req.user.id });
 
-		const token = jwt.sign({ id: user.id }, key, { expiresIn: "1h" });
+		const token = jwt.sign({ id: user.id }, secretKey, { expiresIn: "1h" });
 
 		return res.json({
 			token,

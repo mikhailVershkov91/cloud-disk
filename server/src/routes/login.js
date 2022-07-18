@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import { validationResult } from "express-validator";
 import User from "../models/User.js";
 import jwt from "jsonwebtoken";
+import { secretKey } from "../../index.js";
 
 async function login(req, res) {
 	try {
@@ -22,9 +23,7 @@ async function login(req, res) {
 			return res.status(400).json({ message: "Invalid password" });
 		}
 
-		const key = process.env.SECRET_KEY;
-
-		const token = jwt.sign({ id: user.id }, key, { expiresIn: "1h" });
+		const token = jwt.sign({ id: user.id }, secretKey, { expiresIn: "8h" });
 
 		return res.json({
 			token,

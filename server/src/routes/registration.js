@@ -1,6 +1,8 @@
 import bcrypt from "bcrypt";
 import { validationResult } from "express-validator";
 import User from "../models/User.js";
+import fileService from "../services/fileService.js";
+import File from "../models/File.js";
 
 async function registration(req, res) {
 	try {
@@ -22,6 +24,8 @@ async function registration(req, res) {
 
 		const user = new User({ email, password: hashPassword });
 		await user.save();
+
+		await fileService.createDir(new File({ user: user.id, name: "" }));
 
 		return res.json({ message: "User was created" });
 	} catch (e) {

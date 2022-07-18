@@ -8,9 +8,11 @@ dotenv.config();
 
 const app = express();
 
-const PORT = process.env.PORT;
-const url = process.env.MONGO_URL;
-const baseUrl = "/api";
+export const PORT = process.env.PORT;
+export const url = process.env.MONGO_URL;
+export const defaultFilePath = process.env.FILE_PATH;
+export const secretKey = process.env.SECRET_KEY;
+export const baseUrl = "/api";
 
 (async () => {
 	try {

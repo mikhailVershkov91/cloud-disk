@@ -1,8 +1,7 @@
 import jwt from "jsonwebtoken";
+import { secretKey } from "../../index.js";
 
 function authMiddleware(req, res, next) {
-	const key = process.env.SECRET_KEY;
-
 	if (req.method === "OPTIONS") {
 		return next();
 	}
@@ -12,8 +11,9 @@ function authMiddleware(req, res, next) {
 		if (!token) {
 			return res.status(401).json({ message: "Auth error" });
 		}
-		const decoded = jwt.verify(token, key);
+		const decoded = jwt.verify(token, secretKey);
 		req.user = decoded;
+
 		next();
 	} catch (e) {
 		return res.status(401).json({ message: "Auth error" });

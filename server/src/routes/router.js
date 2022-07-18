@@ -4,6 +4,7 @@ import registration from "./registration.js";
 import login from "./login.js";
 import authMiddleware from "../middleware/auth-middleware.js";
 import auth from "./auth.js";
+import fileController from "../controllers/fileController.js";
 
 const router = express.Router();
 
@@ -22,5 +23,8 @@ router.post(
 router.post("/login", login);
 
 router.get("/auth", authMiddleware, auth);
+
+router.post("/files", authMiddleware, fileController.createDir);
+router.get("/files", authMiddleware, fileController.getFiles);
 
 export default router;
