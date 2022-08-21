@@ -11,7 +11,12 @@ const Navbar = () => {
 	return (
 		<div className={s.container}>
 			<div>
-				<img src={"/icons/cloud-laptop.svg"} width="40px" height="40px" />
+				<img
+					src={"/icons/cloud-laptop.svg"}
+					width="40px"
+					height="40px"
+					alt=""
+				/>
 			</div>
 			<div className={s.nav}>
 				{!isAuth && (

@@ -6,16 +6,20 @@ const File = ({ file }) => {
 	const dispatch = useDispatch();
 	const currentDir = useSelector((state) => state.files.currentDir);
 
+	console.log("currentDir: ", currentDir);
+
 	const openDirHandler = () => {
-		dispatch(pushToStack(currentDir));
-		dispatch(setCurrentDir(file._id));
+		if (file.type === "dir") {
+			dispatch(pushToStack(currentDir));
+			dispatch(setCurrentDir(file._id));
+		}
 	};
 
 	return (
-		<tr onClick={file.type === "dir" ? openDirHandler : ""}>
+		<tr onClick={openDirHandler}>
 			<td>
 				<img
-					src={file.type === "file" ? "/icons/file.svg" : "/icons/folder.svg"}
+					src={file.type !== "dir" ? "/icons/file.svg" : "/icons/folder.svg"}
 					alt=""
 				/>
 			</td>
