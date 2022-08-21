@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getFiles } from "../../actions/file";
+import { getFiles, uploadFile } from "../../actions/file";
 import s from "./Disk.module.css";
 import FileList from "./fileList/FileList";
 import Popup from "./Popup";
@@ -23,6 +23,12 @@ const Disk = () => {
 		dispatch(setCurrentDir(backDirId));
 	};
 
+	const fileUploadHandler = (event) => {
+		const files = [...event.target.files];
+
+		files.forEach((file) => dispatch(uploadFile(file, currentDir)));
+	};
+
 	return (
 		<div className={s.container}>
 			<div className={s.disk_btns}>
@@ -33,12 +39,26 @@ const Disk = () => {
 				) : (
 					<div></div>
 				)}
-				<button
-					className={s.disk_btn_create}
-					onClick={() => setOpenPopup(true)}
-				>
-					Создать папку
-				</button>
+				<div className={s.disk_buttons}>
+					<div className={s.disk_upload}>
+						<label htmlFor="disk__upload-input" className={s.disk_upload_label}>
+							Загрузить файл
+						</label>
+						<input
+							multiple={true}
+							onChange={(event) => fileUploadHandler(event)}
+							type="file"
+							id="disk__upload-input"
+							className={s.disk_upload_input}
+						/>
+					</div>
+					<button
+						className={s.disk_btn_create}
+						onClick={() => setOpenPopup(true)}
+					>
+						Создать папку
+					</button>
+				</div>
 			</div>
 			<FileList />
 			{openPopup && <Popup setOpenPopup={setOpenPopup} />}

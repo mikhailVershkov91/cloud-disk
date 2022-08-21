@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import router from "./src/routes/router.js";
 import cors from "./src/middleware/cors-middleware.js";
+import fileUpload from "express-fileupload";
 
 dotenv.config();
 
@@ -19,6 +20,7 @@ export const baseUrl = "/api";
 		await mongoose.connect(url);
 
 		app.use(cors);
+		app.use(fileUpload({}));
 		app.use(express.json());
 		app.use(baseUrl, router);
 
