@@ -1,18 +1,29 @@
 import React from "react";
+import s from "../../Disk.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentDir, pushToStack } from "../../../../reducers/fileReducer";
+import { downloadFile, deleteFile } from "../../../../actions/file";
+import sizeFormat from "../../../../utils/sizeFormat";
 
 const File = ({ file }) => {
 	const dispatch = useDispatch();
 	const currentDir = useSelector((state) => state.files.currentDir);
-
-	console.log("currentDir: ", currentDir);
 
 	const openDirHandler = () => {
 		if (file.type === "dir") {
 			dispatch(pushToStack(currentDir));
 			dispatch(setCurrentDir(file._id));
 		}
+	};
+
+	const downloadClickHandler = (e) => {
+		e.stopPropagation();
+		downloadFile(file);
+	};
+
+	const deleteClickHandler = (e) => {
+		e.stopPropagation();
+		dispatch(deleteFile(file));
 	};
 
 	return (
@@ -24,8 +35,23 @@ const File = ({ file }) => {
 				/>
 			</td>
 			<td>{file.name}</td>
-			<td>{file.size}</td>
+			<td>{sizeFormat(file.size)}</td>
 			<td>{file.date.slice(0, 10)}</td>
+			<td className={s.action_btns}>
+				{file.type !== "dir" ? (
+					<button
+						className={s.download_btn}
+						onClick={(e) => downloadClickHandler(e)}
+					>
+						Скачать
+					</button>
+				) : (
+					<div></div>
+				)}
+				<button className={s.delete_btn} onClick={(e) => deleteClickHandler(e)}>
+					Удалить
+				</button>
+			</td>
 		</tr>
 	);
 };
