@@ -27,5 +27,7 @@ router.get("/auth", authMiddleware, auth);
 router.post("/files", authMiddleware, fileController.createDir);
 router.get("/files", authMiddleware, fileController.getFiles);
 router.post("/upload", authMiddleware, fileController.uploadFiles);
+router.get("/download", authMiddleware, fileController.downloadFile);
+router.delete("/files", authMiddleware, fileController.deleteFile);
 
 export default router;
