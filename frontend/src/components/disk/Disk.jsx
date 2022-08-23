@@ -1,21 +1,26 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getFiles, uploadFile } from "../../actions/file";
+import { getFiles, uploadFile, searchFile } from "../../actions/file";
 import s from "./Disk.module.css";
 import FileList from "./fileList/FileList";
 import Popup from "./Popup";
 import { useState } from "react";
 import { setCurrentDir } from "../../reducers/fileReducer";
 import Uploader from "./uploader/Uploader";
+import Loader from "../../utils/loader/Loader";
+import { useDebouncedValue } from "@mantine/hooks";
 
 const Disk = () => {
 	const [openPopup, setOpenPopup] = useState(false);
 	const [dragEnter, setDragEnter] = useState(false);
 	const [sort, setSort] = useState("type");
+	const [search, setSearch] = useState("");
+	const [debouncedSearch] = useDebouncedValue(search, 200);
 
 	const dispatch = useDispatch();
 	const currentDir = useSelector((state) => state.files.currentDir);
 	const dirStack = useSelector((state) => state.files.dirStack);
+	const loader = useSelector((state) => state.app.loader);
 
 	useEffect(() => {
 		dispatch(getFiles(currentDir, sort));
@@ -54,6 +59,20 @@ const Disk = () => {
 		setDragEnter(false);
 	};
 
+	const searchHandler = (e) => {
+		setSearch(e.target.value);
+
+		if (e.target.value !== "") {
+			dispatch(searchFile(debouncedSearch));
+		} else {
+			dispatch(getFiles(currentDir));
+		}
+	};
+
+	if (loader) {
+		return <Loader />;
+	}
+
 	return !dragEnter ? (
 		<div
 			className={s.container}
@@ -80,6 +99,15 @@ const Disk = () => {
 							<option value="type">По типу</option>
 							<option value="date">По дате</option>
 						</select>
+					</div>
+					<div>
+						<input
+							className={s.search_input}
+							type="text"
+							placeholder="Поиск файла..."
+							value={search}
+							onChange={searchHandler}
+						/>
 					</div>
 				</div>
 				<div className={s.disk_buttons}>

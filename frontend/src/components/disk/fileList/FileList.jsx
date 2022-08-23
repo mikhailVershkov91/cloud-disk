@@ -8,6 +8,10 @@ const FileList = () => {
 		<File key={file._id} file={file} />
 	));
 
+	if (!files.length) {
+		return <div className={s.text_center}>Файлы не найдены</div>;
+	}
+
 	return (
 		<div className={s.file_container}>
 			<table>

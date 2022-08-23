@@ -348,3 +348,35 @@ tbody tr:hover .action_btns {
 	font-weight: 500;
 	background: #5a5a5a;
 }
+
+.text_center {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: calc(100vh - 50px);
+}
+
+.search_input {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	font-family: Roboto;
+	cursor: pointer;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 14px !important;
+	line-height: 16px !important;
+	color: #5a5a5a;
+	background: #fff !important;
+	width: 230px;
+	height: 40px;
+	border: 1px solid #5a5a5a;
+	box-sizing: border-box;
+	border-radius: 6px;
+	margin-right: 12px;
+	padding-left: 5px;
+}
+.search_input:focus {
+	border: none;
+}
