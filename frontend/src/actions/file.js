@@ -6,10 +6,12 @@ import {
 	addUploadFile,
 	changeUploadFile,
 } from "../reducers/uploadReducer";
+import { showLoader, hideLoader } from "../reducers/appReducer";
 
 export const getFiles = (dirId, sort) => {
 	return async (dispatch) => {
 		try {
+			dispatch(showLoader());
 			let url = "http://localhost:5000/api/files";
 
 			if (dirId) {
@@ -31,6 +33,8 @@ export const getFiles = (dirId, sort) => {
 		} catch (error) {
 			console.error(error);
 			toast.error("Files not found");
+		} finally {
+			dispatch(hideLoader());
 		}
 	};
 };
@@ -133,5 +137,23 @@ export const deleteFile = (file) => {
 			console.error(error);
 			toast.error("File not found");
 		}
+	};
+};
+
+export const searchFile = (search) => {
+	return async (dispatch) => {
+		try {
+			const res = await axios.get(
+				`http://localhost:5000/api/search?search=${search}`,
+				{
+					headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+				}
+			);
+
+			dispatch(setFiles(res.data));
+		} catch (error) {
+			console.error(error);
+			toast.error("Search error");
+		} 
 	};
 };
